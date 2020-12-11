@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const port = 3000;
 const morgan = require("morgan");
-const users = [
+let users = [
   { id: 1, name: "alice" },
   { id: 2, name: "bek" },
   { id: 3, name: "chris" },
@@ -23,8 +23,14 @@ app.get("/users/:id", (req, res) => {
 
   const user = users.filter((user) => user.id === id)[0];
   if (!user) return res.status(404).end();
-  
+
   res.json(user);
+});
+
+app.delete("/users/:id", (req, res) => {
+  const id = parseInt(req.params.id, 10);
+  users = users.filter((user) => user.id !== id);
+  res.status(204).end();
 });
 
 app.listen(port, () => {
